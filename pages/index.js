@@ -190,7 +190,7 @@ export default function Home() {
 
       <footer className="mt-12 py-6 bg-gray-50 border-t border-gray-100">
         <div className="container mx-auto px-4 text-center text-sm text-gray-500">
-          <p>&copy; 2025 AI Generator | </p>
+          <p>&copy; 2025 AI Generator | Pfs </p>
         </div>
       </footer>
     </div>
