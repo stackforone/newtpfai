@@ -9,26 +9,40 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
 
+  const generateImage = async () => {
+    const API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2";
+    const API_TOKEN = "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"; // 🔥 ใส่ API Token ที่นี่
+
+    setLoading(true);
+    setResult(null);
+
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${API_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ inputs: prompt }),
+      });
+
+      if (!response.ok) throw new Error("API Error");
+      const blob = await response.blob();
+      const imageUrl = URL.createObjectURL(blob);
+      setResult({ type: "image", url: imageUrl });
+    } catch (error) {
+      console.error("Error:", error);
+      setResult(null);
+    }
+
+    setLoading(false);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!prompt.trim()) return;
-
-    setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      if (activeTab === 'image') {
-        setResult({
-          type: 'image',
-          url: `/api/placeholder/400/400?text=${encodeURIComponent(prompt)}`,
-        });
-      } else {
-        setResult({
-          type: 'audio',
-          url: '#',
-        });
-      }
-      setLoading(false);
-    }, 1500);
+    if (activeTab === "image") generateImage();
+    else console.log("สร้างเสียง (ต้องเพิ่ม API)"); // ยังไม่ได้เพิ่ม API สำหรับเสียง
   };
 
   return (
@@ -190,7 +204,7 @@ export default function Home() {
 
       <footer className="mt-12 py-6 bg-gray-50 border-t border-gray-100">
         <div className="container mx-auto px-4 text-center text-sm text-gray-500">
-          <p>&copy; 2025 AI Generator | Pfs </p>
+          <p>&copy; 2025 AI Generator | </p>
         </div>
       </footer>
     </div>
